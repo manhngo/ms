@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MaSoi</string>
+    <string name="one">Sói</string>
+    <string name="BaoVe">Bảo vệ</string>
+    <string name="Cupid">Cupid</string>
+    <string name="PhuThuy">Phù thủy</string>
+    <string name="TienTri">Tiên Tri</string>
+    <string name="ThoSan">Thợ Săn</string>
+    <string name="Soi">Sói</string>
+    <string name="Them">Thêm</string>
+    <string name="submit">Submit</string>
+    <string name="button_add_new_text">Them</string>
+    <string name="tab_title">A</string>
+    <string name="go_to_summary">Summary</string>
+    <string name="todo">TODO</string>
+</resources>

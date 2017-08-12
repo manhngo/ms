@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Soi"
+            android:textColor="@android:color/background_dark" />
+
+        <SeekBar
+            android:id="@+id/seekBarSoi"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="3" />
+
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/chkCupid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Cupid" />
+
+    <CheckBox
+        android:id="@+id/chkBaoVe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/BaoVe" />
+
+    <CheckBox
+        android:id="@+id/chkPhuThuy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/PhuThuy" />
+
+    <CheckBox
+        android:id="@+id/chkTienTri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/TienTri" />
+
+    <CheckBox
+        android:id="@+id/chkThoSan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ThoSan" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+
+</LinearLayout>
