@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.manhngo.ms.Adapter.NguoiChoiAdapter;
-import com.example.manhngo.ms.NguoiChoi;
+import com.example.manhngo.ms.Player;
 import com.example.manhngo.ms.R;
 import com.example.manhngo.ms.Util.MyUtils;
 import com.example.manhngo.ms.Util.ToastUtil;
@@ -31,7 +31,7 @@ import java.util.List;
  */
 
 public class SoiFragment extends Fragment implements BlockingStep {
-    private List<NguoiChoi> nguoiChois = new ArrayList<>();
+    private List<Player> nguoiChois = new ArrayList<>();
     private NguoiChoiAdapter nguoiChoiAdapter;
 
     @Override

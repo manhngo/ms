@@ -1,7 +1,7 @@
 package com.example.manhngo.ms.Util;
 
 
-import com.example.manhngo.ms.NguoiChoi;
+import com.example.manhngo.ms.Player;
 
 import java.util.List;
 
@@ -11,14 +11,14 @@ import java.util.List;
 
 public class MyUtils {
 
-    public static void prepareRecyclerViewData(final List<NguoiChoi> nguoiChois) {
-        NguoiChoi nguoiChoi = new NguoiChoi("Manh");
-        nguoiChois.add(nguoiChoi);
-        nguoiChoi = new NguoiChoi("Trang");
-        nguoiChois.add(nguoiChoi);
-        nguoiChoi = new NguoiChoi("Ba Duc");
-        nguoiChois.add(nguoiChoi);
-        nguoiChoi = new NguoiChoi("Me Huong");
-        nguoiChois.add(nguoiChoi);
+    public static void prepareRecyclerViewData(final List<Player> nguoiChois) {
+        Player player = new Player("Manh");
+        nguoiChois.add(player);
+        player = new Player("Trang");
+        nguoiChois.add(player);
+        player = new Player("Ba Duc");
+        nguoiChois.add(player);
+        player = new Player("Me Huong");
+        nguoiChois.add(player);
     }
 }

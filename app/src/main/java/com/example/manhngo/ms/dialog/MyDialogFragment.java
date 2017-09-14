@@ -9,9 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.example.manhngo.ms.Adapter.NguoiChoiAdapter;
-import com.example.manhngo.ms.NguoiChoi;
+import com.example.manhngo.ms.Player;
 import com.example.manhngo.ms.R;
 import com.example.manhngo.ms.Util.MyUtils;
 
@@ -25,7 +24,7 @@ import java.util.List;
 public class MyDialogFragment extends DialogFragment {
     private RecyclerView mRecyclerView;
     private NguoiChoiAdapter adapter;
-    private List<NguoiChoi> nguoiChois = new ArrayList<>();
+    private List<Player> nguoiChois = new ArrayList<>();
     // this method create view for your Dialog
 
     public static MyDialogFragment newInstance(String data) {
