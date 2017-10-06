@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.example.manhngo.ms.NguoiChoi;
+import com.example.manhngo.ms.Player;
 import com.example.manhngo.ms.R;
 
 import java.util.List;
@@ -21,9 +20,9 @@ import java.util.List;
 public class NguoiChoiAdapter extends RecyclerView.Adapter<NguoiChoiAdapter.MyViewHolder> {
 
     private Context context;
-    private List<NguoiChoi> nguoiChois;
+    private List<Player> nguoiChois;
 
-    public NguoiChoiAdapter(Context context, List<NguoiChoi> nguoiChois) {
+    public NguoiChoiAdapter(Context context, List<Player> nguoiChois) {
         this.nguoiChois = nguoiChois;
         this.context = context;
     }
@@ -38,8 +37,8 @@ public class NguoiChoiAdapter extends RecyclerView.Adapter<NguoiChoiAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        NguoiChoi nguoiChoi = nguoiChois.get(position);
-        holder.textView.setText(nguoiChoi.getTenNguoiChoi());
+        Player player = nguoiChois.get(position);
+        holder.textView.setText(player.getName());
     }
 
     @Override
