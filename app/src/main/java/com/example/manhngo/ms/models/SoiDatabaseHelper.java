@@ -10,7 +10,7 @@ import com.example.manhngo.ms.Util.DBUtitls;
  * Created by manhngo on 9/12/17.
  */
 
-public class MSSqLiteHelper extends SQLiteOpenHelper {
+public class SoiDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_PLAYERD_TABLE_SQL =
             "CREATE TABLE " + DBUtitls.PLAYER_TABLE_NAME + " ("
@@ -27,7 +27,7 @@ public class MSSqLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "MaSoi";
     private static final int DATABASE_VERSION = 1;
 
-    MSSqLiteHelper(Context context) {
+    SoiDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
