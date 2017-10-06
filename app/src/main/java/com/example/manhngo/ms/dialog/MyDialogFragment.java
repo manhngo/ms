@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.manhngo.ms.Adapter.NguoiChoiAdapter;
-import com.example.manhngo.ms.Player;
 import com.example.manhngo.ms.R;
 import com.example.manhngo.ms.Util.MyUtils;
+import com.example.manhngo.ms.models.Player;
 
 import java.util.ArrayList;
 import java.util.List;

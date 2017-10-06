@@ -14,11 +14,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.manhngo.ms.Adapter.NguoiChoiAdapter;
-import com.example.manhngo.ms.Player;
 import com.example.manhngo.ms.R;
 import com.example.manhngo.ms.Util.MyUtils;
 import com.example.manhngo.ms.Util.ToastUtil;
 import com.example.manhngo.ms.dialog.MyDialogFragment;
+import com.example.manhngo.ms.models.Player;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;

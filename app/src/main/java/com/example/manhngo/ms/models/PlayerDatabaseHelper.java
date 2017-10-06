@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.manhngo.ms.Player;
 import com.example.manhngo.ms.Util.DBUtitls;
 import com.example.manhngo.ms.Util.Function;
 
@@ -66,7 +65,7 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_PLAYERS_TABLE = String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s TEXT)",
+        String CREATE_PLAYERS_TABLE = String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY, %s TEXT UNIQUE, %s TEXT)",
                 TABLE_PLAYERS, KEY_PLAYER_ID, KEY_PLAYER_NAME, KEY_PLAYER_FUNCTION);
         sqLiteDatabase.execSQL(CREATE_PLAYERS_TABLE);
     }
@@ -95,7 +94,7 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
             Log.d(TAG, "addPlayer: " + id);
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            Log.d(TAG, "Error while trying to add player to database");
+            Log.d(TAG, "Error while trying to add player to database " + e);
         } finally {
             db.endTransaction();
         }
@@ -168,4 +167,11 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
             sqLiteDatabase.endTransaction();
         }
     }
+
+//    public boolean checkDataAlreadyInDb() {
+//        SQLiteDatabase database = getReadableDatabase();
+//        String PLAYERS_SELECT_QUERY =
+//                String.format("SELECT * FROM %s WHERE %s = %s" ,
+//                        TABLE_PLAYERS, Name);
+//    }
 }

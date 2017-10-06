@@ -12,11 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.manhngo.ms.Player;
 import com.example.manhngo.ms.Presenter.PlayerPresenter;
 import com.example.manhngo.ms.R;
-import com.example.manhngo.ms.Util.MyCustomAdapter;
+import com.example.manhngo.ms.Util.PlayersAdapter;
 import com.example.manhngo.ms.Util.ToastUtil;
+import com.example.manhngo.ms.models.Player;
 import com.example.manhngo.ms.models.PlayerDatabaseHelper;
 
 import java.util.ArrayList;
@@ -37,9 +37,8 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
     ArrayList<String> dsNguoiChoi;
     Set dsNguoiChoi_Set;
     SharedPreferences preferences;
-    MyCustomAdapter adapter;
+    PlayersAdapter adapter;
     PlayerDatabaseHelper databaseHelper;
-    ArrayList<Player> playerArrayList;
     PlayerPresenter playerPresenter;
 
 
@@ -73,7 +72,7 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         databaseHelper = PlayerDatabaseHelper.getInstance(this);
 
         playerPresenter.setPlayerList(databaseHelper.getAllPlayers());
-        adapter = new MyCustomAdapter(this, R.layout.custom_listview, playerPresenter.getPlayerList());
+        adapter = new PlayersAdapter(this, playerPresenter.getPlayerList());
         lvTenNguoiChoi.setAdapter(adapter);
     }
 
@@ -81,18 +80,14 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         if (v.getId() == R.id.btnThem) {
             String temp = edtNhapTen.getText().toString();
-            if (!dsNguoiChoi.contains(temp)) {
-                Player player = new Player(temp);
-                databaseHelper.addPlayer(player);
-                Log.d(TAG, "onClick: " + player.toString());
-                playerPresenter.addPlayer(player);
-                dsNguoiChoi.add(player.getName());
-                adapter.notifyDataSetChanged();
-                edtNhapTen.setText("");
+            Player player = new Player(temp);
+            databaseHelper.addPlayer(player);
+            Log.d(TAG, "onClick: " + player.toString());
+            playerPresenter.addPlayer(player);
+            adapter.notifyDataSetChanged();
+            edtNhapTen.setText("");
 
-            } else {
-                ToastUtil.show(getApplicationContext(), "Tên bị trùng");
-            }
+            ToastUtil.show(getApplicationContext(), "Tên bị trùng");
         }
         if (v.getId() == R.id.btnSubmit) {
             //ToastUtil.show(getApplicationContext(), dsNguoiChoi.toString());
@@ -110,6 +105,7 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
     public void onDeleteItem() {
 
     }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d("Clicked", "Item Text");

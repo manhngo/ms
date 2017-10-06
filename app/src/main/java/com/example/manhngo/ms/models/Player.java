@@ -1,4 +1,4 @@
-package com.example.manhngo.ms;
+package com.example.manhngo.ms.models;
 
 import com.example.manhngo.ms.Util.Function;
 

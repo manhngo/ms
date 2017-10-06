@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.manhngo.ms.Player;
 import com.example.manhngo.ms.R;
+import com.example.manhngo.ms.models.Player;
 
 import java.util.List;
 

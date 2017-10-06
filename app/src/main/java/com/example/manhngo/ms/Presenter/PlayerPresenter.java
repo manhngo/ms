@@ -1,6 +1,6 @@
 package com.example.manhngo.ms.Presenter;
 
-import com.example.manhngo.ms.Player;
+import com.example.manhngo.ms.models.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,5 +27,10 @@ public class PlayerPresenter {
 
     public void setPlayerList(List<Player> playerList) {
         this.playerList = playerList;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

@@ -1,7 +1,7 @@
 package com.example.manhngo.ms.Util;
 
 
-import com.example.manhngo.ms.Player;
+import com.example.manhngo.ms.models.Player;
 
 import java.util.List;
 
