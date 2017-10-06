@@ -1,27 +1,25 @@
 package com.example.manhngo.ms;
 
+import com.example.manhngo.ms.Util.Function;
+
 /**
  * Created by NgoXuanManh on 3/15/2017.
  */
 
 public class Player {
-    private String id;
+    private long id;
     private String name;
+    private Function function;
 
     public Player(String name) {
         this.name = name;
     }
 
-    public Player(String playerId, String playerName) {
-        id = playerId;
-        name = playerName;
-    }
-
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -32,5 +30,18 @@ public class Player {
     public Player setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public Function getFunction() {
+        return function;
+    }
+
+    public void setFunction(Function function) {
+        this.function = function;
+    }
+
+    @Override
+    public String toString() {
+        return "{id: " + getId() + ", name: " + getName() + ", function: " + getFunction() + "}";
     }
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,7 +11,6 @@ import android.widget.SeekBar;
 
 import com.example.manhngo.ms.R;
 import com.example.manhngo.ms.Util.Key;
-import com.example.manhngo.ms.models.MSSqLiteHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,17 +36,13 @@ public class ChooseHeroActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_hero);
 
-        Log.d(TAG, "onCreate: " + MSSqLiteHelper.INSERT_PLAYED_TABLE_SQL);
-        Log.d(TAG, "onCreate: " + MSSqLiteHelper.CREATE_BAOVE_TABLE_SQL);
-        Log.d(TAG, "onCreate: " + MSSqLiteHelper.CREATE_PLAYERD_TABLE_SQL);
-
-        seekBarSoi = (SeekBar) findViewById(R.id.seekBarSoi);
-        chkBaoVe = (CheckBox) findViewById(R.id.chkBaoVe);
-        chkCupid = (CheckBox) findViewById(R.id.chkCupid);
-        chkPhuThuy = (CheckBox) findViewById(R.id.chkPhuThuy);
-        chkThoSan = (CheckBox) findViewById(R.id.chkThoSan);
-        chkTienTri = (CheckBox) findViewById(R.id.chkTienTri);
-        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        seekBarSoi = findViewById(R.id.seekBarSoi);
+        chkBaoVe = findViewById(R.id.chkBaoVe);
+        chkCupid = findViewById(R.id.chkCupid);
+        chkPhuThuy = findViewById(R.id.chkPhuThuy);
+        chkThoSan = findViewById(R.id.chkThoSan);
+        chkTienTri = findViewById(R.id.chkTienTri);
+        btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(this);
 
         seekBarSoi.setOnSeekBarChangeListener(this);

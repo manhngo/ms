@@ -12,10 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-
+import com.example.manhngo.ms.Player;
+import com.example.manhngo.ms.Presenter.PlayerPresenter;
 import com.example.manhngo.ms.R;
 import com.example.manhngo.ms.Util.MyCustomAdapter;
 import com.example.manhngo.ms.Util.ToastUtil;
+import com.example.manhngo.ms.models.PlayerDatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,6 +29,7 @@ import java.util.Set;
 
 public class MemberActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    public static String TAG = "MemberActivity";
     EditText edtNhapTen;
     Button btnThem;
     Button btnSubmit;
@@ -35,6 +38,9 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
     Set dsNguoiChoi_Set;
     SharedPreferences preferences;
     MyCustomAdapter adapter;
+    PlayerDatabaseHelper databaseHelper;
+    ArrayList<Player> playerArrayList;
+    PlayerPresenter playerPresenter;
 
 
     @Override
@@ -42,26 +48,33 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member);
 
-        edtNhapTen = (EditText) findViewById(R.id.edtNhapTen);
-        btnThem = (Button) findViewById(R.id.btnThem);
-        btnSubmit = (Button) findViewById(R.id.btnSubmit);
-        lvTenNguoiChoi = (ListView) findViewById(R.id.lvTenNguoiChoi);
+        playerPresenter = new PlayerPresenter();
+
+
+        edtNhapTen = findViewById(R.id.edtNhapTen);
+        btnThem = findViewById(R.id.btnThem);
+        btnSubmit = findViewById(R.id.btnSubmit);
+        lvTenNguoiChoi = findViewById(R.id.lvTenNguoiChoi);
 
         btnThem.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
         lvTenNguoiChoi.setOnItemClickListener(this);
-        preferences = getSharedPreferences("my_data", MODE_PRIVATE);
-        dsNguoiChoi = new ArrayList<>();
-        dsNguoiChoi_Set = new HashSet();
-        dsNguoiChoi_Set = preferences.getStringSet("DANH_SACH_NGUOI_CHOI", null);
-        if (dsNguoiChoi_Set != null)
-            dsNguoiChoi.addAll(dsNguoiChoi_Set);
+
+
+//        preferences = getSharedPreferences("my_data", MODE_PRIVATE);
+//        dsNguoiChoi = new ArrayList<>();
+//        dsNguoiChoi_Set = new HashSet();
+//        dsNguoiChoi_Set = preferences.getStringSet("DANH_SACH_NGUOI_CHOI", null);
+//        if (dsNguoiChoi_Set != null)
+//            dsNguoiChoi.addAll(dsNguoiChoi_Set);
         //instantiate custom adapter
-        adapter = new MyCustomAdapter(this, R.layout.custom_listview, dsNguoiChoi);
 
         //handle listview and assign adapter
-        lvTenNguoiChoi.setAdapter(adapter);
+        databaseHelper = PlayerDatabaseHelper.getInstance(this);
 
+        playerPresenter.setPlayerList(databaseHelper.getAllPlayers());
+        adapter = new MyCustomAdapter(this, R.layout.custom_listview, playerPresenter.getPlayerList());
+        lvTenNguoiChoi.setAdapter(adapter);
     }
 
     @Override
@@ -69,9 +82,14 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         if (v.getId() == R.id.btnThem) {
             String temp = edtNhapTen.getText().toString();
             if (!dsNguoiChoi.contains(temp)) {
-                dsNguoiChoi.add(temp);
+                Player player = new Player(temp);
+                databaseHelper.addPlayer(player);
+                Log.d(TAG, "onClick: " + player.toString());
+                playerPresenter.addPlayer(player);
+                dsNguoiChoi.add(player.getName());
                 adapter.notifyDataSetChanged();
                 edtNhapTen.setText("");
+
             } else {
                 ToastUtil.show(getApplicationContext(), "Tên bị trùng");
             }
@@ -89,6 +107,9 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    public void onDeleteItem() {
+
+    }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d("Clicked", "Item Text");
