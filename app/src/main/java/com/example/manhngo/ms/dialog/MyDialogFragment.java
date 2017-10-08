@@ -44,7 +44,7 @@ public class MyDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_wolf);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //setadapter
         MyUtils.prepareRecyclerViewData(nguoiChois);

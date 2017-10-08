@@ -42,9 +42,9 @@ public class SoiFragment extends Fragment implements BlockingStep {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImageView imageView = (ImageView) view.findViewById(R.id.image_view);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        ImageButton imageButton = (ImageButton) view.findViewById(R.id.imgbtn_bite);
+        ImageView imageView = view.findViewById(R.id.image_view);
+        RecyclerView recyclerView = view.findViewById(R.id.rv_wolf);
+        ImageButton imageButton = view.findViewById(R.id.imgbtn_bite);
         imageView.setImageResource(R.drawable.soi_icon);
         MyUtils.prepareRecyclerViewData(nguoiChois);
         nguoiChoiAdapter = new NguoiChoiAdapter(getActivity(), nguoiChois);

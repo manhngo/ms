@@ -56,8 +56,4 @@ public class PlayerPresenter {
         }
         return player;
     }
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }

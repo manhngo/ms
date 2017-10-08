@@ -21,12 +21,11 @@ import static android.content.ContentValues.TAG;
 
 public class PlayerDatabaseHelper extends SQLiteOpenHelper {
     // Database Info
-    private static final String DATABASE_NAME = "MaSoi";
-    private static final int DATABASE_VERSION = 1;
+
     private static PlayerDatabaseHelper sInstance;
 
     private PlayerDatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DBUtitls.DATABASE_NAME, null, DBUtitls.DATABASE_VERSION);
     }
 
 
