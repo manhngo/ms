@@ -20,32 +20,9 @@ import static android.content.ContentValues.TAG;
  */
 
 public class PlayerDatabaseHelper extends SQLiteOpenHelper {
-
-    public static final String CREATE_PLAYERD_TABLE_SQL =
-            "CREATE TABLE " + DBUtitls.PLAYER_TABLE_NAME + " ("
-                    + DBUtitls.PLAYER_COLUMN_ID + " " + DBUtitls.TEXT_DATA_TYPE + " " + DBUtitls.PRIMARY_KEY + ", "
-                    + DBUtitls.PLAYER_COLUMN_NAME + " " + DBUtitls.TEXT_DATA_TYPE + " " + DBUtitls.NOT_NULL + ")";
-    public static final String CREATE_BAOVE_TABLE_SQL =
-            "CREATE TABLE " + DBUtitls.BAOVE_TABLE_NAME + " ("
-                    + DBUtitls.BAOVE_COLUMN_ID + " " + DBUtitls.TEXT_DATA_TYPE + " " + DBUtitls.PRIMARY_KEY + ", "
-                    + DBUtitls.BAOVE_COLUMN_PLAYER + " " + DBUtitls.TEXT_DATA_TYPE + " " + DBUtitls.NOT_NULL + ")";
-    public static final String INSERT_PLAYED_TABLE_SQL =
-            "INSERT INTO " + DBUtitls.PLAYER_TABLE_NAME + " (" + DBUtitls.PLAYER_COLUMN_ID + ", " + DBUtitls.PLAYER_COLUMN_NAME + ")"
-                    + " VALUES "
-                    + "('1', 'Manh'), " + "('2', 'Trang')";
     // Database Info
     private static final String DATABASE_NAME = "MaSoi";
     private static final int DATABASE_VERSION = 1;
-    // Table Names
-    private static final String TABLE_PLAYERS = "players";
-    // Post Table Columns
-    private static final String KEY_PLAYER_ID = "id";
-    private static final String KEY_PLAYER_NAME = "name";
-    private static final String KEY_PLAYER_FUNCTION = "function";
-    // User Table Columns
-    private static final String KEY_USER_ID = "id";
-    private static final String KEY_USER_NAME = "userName";
-    private static final String KEY_USER_PROFILE_PICTURE_URL = "profilePictureUrl";
     private static PlayerDatabaseHelper sInstance;
 
     private PlayerDatabaseHelper(Context context) {
@@ -66,38 +43,41 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_PLAYERS_TABLE = String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY, %s TEXT UNIQUE, %s TEXT)",
-                TABLE_PLAYERS, KEY_PLAYER_ID, KEY_PLAYER_NAME, KEY_PLAYER_FUNCTION);
+                DBUtitls.PLAYERS_TABLE, DBUtitls.PLAYERS_COLUMN_ID, DBUtitls.PLAYERS_COLUMN_NAME, DBUtitls.PLAYERS_COLUMN_FUNCTION);
         sqLiteDatabase.execSQL(CREATE_PLAYERS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
+        Log.d(TAG, "onUpgrade: ");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DBUtitls.PLAYERS_TABLE);
         onCreate(sqLiteDatabase);
     }
 
     // Insert a post into the database
-    public void addPlayer(Player player) {
+    public long addPlayer(Player player) {
         // Create and/or open the database for writing
         SQLiteDatabase db = getWritableDatabase();
-
+        long id;
         // It's a good idea to wrap our insert in a transaction. This helps with performance and ensures
         // consistency of the database.
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
             Log.d(TAG, "addPlayer: " + player.getName());
-            values.put(KEY_PLAYER_NAME, player.getName());
+            values.put(DBUtitls.PLAYERS_COLUMN_NAME, player.getName());
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
-            long id = db.insertOrThrow(TABLE_PLAYERS, null, values);
+            id = db.insertOrThrow(DBUtitls.PLAYERS_TABLE, null, values);
             player.setId(id);
             Log.d(TAG, "addPlayer: " + id);
             db.setTransactionSuccessful();
         } catch (Exception e) {
+            id = -1;
             Log.d(TAG, "Error while trying to add player to database " + e);
         } finally {
             db.endTransaction();
         }
+        return id;
     }
 
     public List<Player> getAllPlayers() {
@@ -105,7 +85,7 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
 
         String PLAYERS_SELECT_QUERY =
                 String.format("SELECT * FROM %s",
-                        TABLE_PLAYERS);
+                        DBUtitls.PLAYERS_TABLE);
 
         // "getReadableDatabase()" and "getWriteableDatabase()" return the same object (except under low
         // disk space scenarios)
@@ -115,8 +95,11 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     Player player = new Player("UNKNOWN_NAME");
-                    player.setName(cursor.getString(cursor.getColumnIndex(KEY_PLAYER_NAME)));
-                    player.setFunction(Function.valueOf(cursor.getString(cursor.getColumnIndex(KEY_PLAYER_FUNCTION))));
+                    player.setId(cursor.getLong(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_ID)));
+                    player.setName(cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_NAME)));
+                    if (cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_FUNCTION)) != null) {
+                        player.setFunction(Function.valueOf(cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_FUNCTION))));
+                    }
                     players.add(player);
                 } while (cursor.moveToNext());
             }
@@ -130,15 +113,38 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
         return players;
     }
 
-    public int updateFunctionByName(Player player) {
+    public Cursor fetchAllPlayers() {
+
+        String PLAYERS_SELECT_QUERY =
+                String.format("SELECT * FROM %s",
+                        DBUtitls.PLAYERS_TABLE);
+
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery(PLAYERS_SELECT_QUERY, null);
+    }
+
+    public long updateFunctionByName(Player player) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_PLAYER_FUNCTION, player.getName());
+        values.put(DBUtitls.PLAYERS_COLUMN_FUNCTION, player.getName());
 
         // Updating profile picture url for user with that userName
-        return db.update(TABLE_PLAYERS, values, KEY_PLAYER_NAME + " = ?",
+        return db.update(DBUtitls.PLAYERS_TABLE, values, DBUtitls.PLAYERS_COLUMN_NAME + " = ?",
                 new String[]{String.valueOf(player.getName())});
+    }
+
+    public long updatePlayerById(Player player) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DBUtitls.PLAYERS_COLUMN_NAME, player.getName());
+        if (player.getFunction() != null) {
+            values.put(DBUtitls.PLAYERS_COLUMN_FUNCTION, player.getFunction().toString());
+        }
+        // Updating profile picture url for user with that userName
+        return db.update(DBUtitls.PLAYERS_TABLE, values, DBUtitls.PLAYERS_COLUMN_ID + " = ?",
+                new String[]{String.valueOf(player.getId())});
     }
 
     public void deleteAllPlayers() {
@@ -146,7 +152,7 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             // Order of deletions is important when foreign key relationships exist.
-            db.delete(TABLE_PLAYERS, null, null);
+            db.delete(DBUtitls.PLAYERS_TABLE, null, null);
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to delete all posts and users");
@@ -159,7 +165,7 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.beginTransaction();
         try {
-            sqLiteDatabase.delete(TABLE_PLAYERS, KEY_PLAYER_ID + " = " + id, null);
+            sqLiteDatabase.delete(DBUtitls.PLAYERS_TABLE, DBUtitls.PLAYERS_COLUMN_ID + " = " + id, null);
             sqLiteDatabase.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to delete player");

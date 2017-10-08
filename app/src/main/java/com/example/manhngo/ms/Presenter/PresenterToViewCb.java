@@ -5,5 +5,5 @@ package com.example.manhngo.ms.Presenter;
  */
 
 public interface PresenterToViewCb {
-
+    void onClick();
 }

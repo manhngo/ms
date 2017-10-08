@@ -6,10 +6,11 @@ package com.example.manhngo.ms.Util;
 
 public final class DBUtitls {
 
-    public static final String PLAYER_TABLE_NAME = "PLAYER";
+    public static final String PLAYERS_TABLE = "players";
 
-    public static final String PLAYER_COLUMN_ID = "Id";
-    public static final String PLAYER_COLUMN_NAME = "Name";
+    public static final String PLAYERS_COLUMN_ID = "_id";
+    public static final String PLAYERS_COLUMN_NAME = "name";
+    public static final String PLAYERS_COLUMN_FUNCTION = "function";
 
     public static final String BAOVE_TABLE_NAME = "BAOVE";
     public static final String BAOVE_COLUMN_ID = "Id";

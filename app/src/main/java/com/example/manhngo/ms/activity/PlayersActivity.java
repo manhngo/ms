@@ -1,7 +1,9 @@
 package com.example.manhngo.ms.activity;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,24 +14,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.manhngo.ms.Adapter.PlayersCursorAdapter;
 import com.example.manhngo.ms.Presenter.PlayerPresenter;
 import com.example.manhngo.ms.R;
-import com.example.manhngo.ms.Util.PlayersAdapter;
+import com.example.manhngo.ms.Util.DBUtitls;
 import com.example.manhngo.ms.Util.ToastUtil;
+import com.example.manhngo.ms.dialog.PlayersDialogFragment;
+import com.example.manhngo.ms.inteface.FragmentToActivity;
 import com.example.manhngo.ms.models.Player;
-import com.example.manhngo.ms.models.PlayerDatabaseHelper;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by NgoXuanManh on 3/15/2017.
  */
 
-public class MemberActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class PlayersActivity extends AppCompatActivity implements View.OnClickListener,
+        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, FragmentToActivity {
 
-    public static String TAG = "MemberActivity";
+    public static String TAG = "PlayersActivity";
     EditText edtNhapTen;
     Button btnThem;
     Button btnSubmit;
@@ -37,8 +41,9 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
     ArrayList<String> dsNguoiChoi;
     Set dsNguoiChoi_Set;
     SharedPreferences preferences;
-    PlayersAdapter adapter;
-    PlayerDatabaseHelper databaseHelper;
+    PlayersCursorAdapter adapter;
+    Player playerInProcess;
+
     PlayerPresenter playerPresenter;
 
 
@@ -47,7 +52,7 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member);
 
-        playerPresenter = new PlayerPresenter();
+        playerPresenter = new PlayerPresenter(this);
 
 
         edtNhapTen = findViewById(R.id.edtNhapTen);
@@ -58,21 +63,10 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         btnThem.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
         lvTenNguoiChoi.setOnItemClickListener(this);
+        lvTenNguoiChoi.setOnItemLongClickListener(this);
 
-
-//        preferences = getSharedPreferences("my_data", MODE_PRIVATE);
-//        dsNguoiChoi = new ArrayList<>();
-//        dsNguoiChoi_Set = new HashSet();
-//        dsNguoiChoi_Set = preferences.getStringSet("DANH_SACH_NGUOI_CHOI", null);
-//        if (dsNguoiChoi_Set != null)
-//            dsNguoiChoi.addAll(dsNguoiChoi_Set);
-        //instantiate custom adapter
-
-        //handle listview and assign adapter
-        databaseHelper = PlayerDatabaseHelper.getInstance(this);
-
-        playerPresenter.setPlayerList(databaseHelper.getAllPlayers());
-        adapter = new PlayersAdapter(this, playerPresenter.getPlayerList());
+        Log.d(TAG, "onCreate: " + playerPresenter.getPlayerList());
+        adapter = new PlayersCursorAdapter(this, playerPresenter.fetchAllPlayers());
         lvTenNguoiChoi.setAdapter(adapter);
     }
 
@@ -81,22 +75,15 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         if (v.getId() == R.id.btnThem) {
             String temp = edtNhapTen.getText().toString();
             Player player = new Player(temp);
-            databaseHelper.addPlayer(player);
+            if (playerPresenter.addPlayer(player) <= 0) {
+                ToastUtil.show(getApplicationContext(), "Tên bị trùng");
+            }
+            ;
             Log.d(TAG, "onClick: " + player.toString());
-            playerPresenter.addPlayer(player);
-            adapter.notifyDataSetChanged();
+            adapter.changeCursor(playerPresenter.fetchAllPlayers());
             edtNhapTen.setText("");
-
-            ToastUtil.show(getApplicationContext(), "Tên bị trùng");
         }
         if (v.getId() == R.id.btnSubmit) {
-            //ToastUtil.show(getApplicationContext(), dsNguoiChoi.toString());
-            if (dsNguoiChoi_Set == null)
-                dsNguoiChoi_Set = new HashSet();
-            dsNguoiChoi_Set.addAll(dsNguoiChoi);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putStringSet("DANH_SACH_NGUOI_CHOI", dsNguoiChoi_Set);
-            editor.commit();
             Intent intent = new Intent(getApplicationContext(), ChooseHeroActivity.class);
             startActivity(intent);
         }
@@ -108,8 +95,25 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d("Clicked", "Item Text");
-        String item = (String) parent.getItemAtPosition(position);
-        edtNhapTen.setText(item);
+        Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+        String myColumnValue = cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_NAME));
+        Log.d("Clicked", "Item Text + " + myColumnValue);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+        playerInProcess = playerPresenter.getPlayerFromCursor(cursor);
+        FragmentManager fm = getFragmentManager();
+        PlayersDialogFragment playersDialogFragment = PlayersDialogFragment.newInstance(playerInProcess.getName());
+        playersDialogFragment.show(fm, null);
+        return false;
+    }
+
+    @Override
+    public void onFinishedChangeText(String text) {
+        playerInProcess.setName(text);
+        playerPresenter.updateNameById(playerInProcess);
+        adapter.changeCursor(playerPresenter.fetchAllPlayers());
     }
 }

@@ -3,6 +3,7 @@ package com.example.manhngo.ms.models;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 
 /**
  * Created by NgoXuanManh on 10/5/2017.
@@ -36,7 +37,9 @@ public class PostsDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
-        db.setForeignKeyConstraintsEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            db.setForeignKeyConstraintsEnabled(true);
+        }
     }
 
     // Called when the database is created for the FIRST time.

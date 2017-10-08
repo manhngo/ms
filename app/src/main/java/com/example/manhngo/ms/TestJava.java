@@ -138,6 +138,6 @@ public class TestJava {
             public List<Player> subList(int i, int i1) {
                 return null;
             }
-        }
+        };
     }
 }
