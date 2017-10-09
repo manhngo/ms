@@ -2,11 +2,15 @@ package com.example.manhngo.ms.models;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.manhngo.ms.Util.DBUtitls;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -71,5 +75,29 @@ public class PlayerDetailsDatabaseHelper extends SQLiteOpenHelper {
         return db.update(DBUtitls.PLAYER_DETAILS_TABLE, values,
                 DBUtitls.PLAYER_DETAILS_COLUMN_PLAYER + " = ?",
                 new String[]{String.valueOf(player.getId())});
+    }
+
+    public List<Integer> getPlayersByFunction(String function) {
+        List<Integer> listId = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(DBUtitls.PLAYER_DETAILS_TABLE, null, DBUtitls.PLAYER_DETAILS_COLUMN_FUNCTION + " = ?", new String[]{function}, null, null, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    listId.add((int) cursor.getLong(cursor.getColumnIndex(DBUtitls.PLAYER_DETAILS_COLUMN_PLAYER)));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get 'id player' from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        if (cursor != null)
+            cursor.moveToFirst();
+        return listId;
     }
 }

@@ -20,10 +20,10 @@ import java.util.List;
 public class CardViewDataAdapter extends
         RecyclerView.Adapter<CardViewDataAdapter.ViewHolder> {
 
-    private List<Player> stList;
+    private final List<Player> players;
 
     public CardViewDataAdapter(List<Player> students) {
-        this.stList = students;
+        this.players = students;
 
     }
 
@@ -45,20 +45,20 @@ public class CardViewDataAdapter extends
 
         final int pos = position;
 
-        viewHolder.tvName.setText(stList.get(position).getName());
+        viewHolder.tvName.setText(players.get(position).getName());
 
-        viewHolder.chkSelected.setChecked(stList.get(position).isSelected());
+        viewHolder.chkSelected.setChecked(players.get(position).isSelected());
 
-        viewHolder.chkSelected.setTag(stList.get(position));
+        viewHolder.chkSelected.setTag(players.get(position));
 
 
         viewHolder.chkSelected.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 CheckBox cb = (CheckBox) v;
-                Student contact = (Student) cb.getTag();
+                Player contact = (Player) cb.getTag();
 
                 contact.setSelected(cb.isChecked());
-                stList.get(pos).setSelected(cb.isChecked());
+                players.get(pos).setSelected(cb.isChecked());
 
                 Toast.makeText(
                         v.getContext(),
@@ -72,12 +72,12 @@ public class CardViewDataAdapter extends
     // Return the size arraylist
     @Override
     public int getItemCount() {
-        return stList.size();
+        return players.size();
     }
 
     // method to access in activity after updating selection
     public List<Player> getStudentist() {
-        return stList;
+        return players;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
