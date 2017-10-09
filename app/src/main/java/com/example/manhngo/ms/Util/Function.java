@@ -5,5 +5,5 @@ package com.example.manhngo.ms.Util;
  */
 
 public enum Function {
-    CUPID, BAO_VE, PHU_THUY, THO_SAN, TIEN_TRI, SOI
+    CUPID, BAO_VE, PHU_THUY, THO_SAN, TIEN_TRI, WOLF, NOTHING
 }

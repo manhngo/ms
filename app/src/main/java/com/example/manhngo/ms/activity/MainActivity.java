@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements StepperLayout.Ste
         Log.d(TAG, "onCreate: List" + list);
 
 
-        mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
+        mStepperLayout = findViewById(R.id.stepperLayout);
         MyStepperAdapter myStepperAdapter = new MyStepperAdapter(getSupportFragmentManager(), this, list);
         mStepperLayout.setAdapter(myStepperAdapter);
         mStepperLayout.setListener(this);

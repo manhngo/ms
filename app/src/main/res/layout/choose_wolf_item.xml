@@ -13,7 +13,7 @@
         android:layout_margin="5dp">
 
         <TextView
-            android:id="@+id/tvName"
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -22,7 +22,7 @@
             android:textSize="18sp" />
 
         <CheckBox
-            android:id="@+id/chkSelected"
+            android:id="@+id/chk_wolf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

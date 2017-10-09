@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -50,8 +51,9 @@ public class ChooseHeroActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
+        Log.d(TAG, "onClick: choosehero");
         ArrayList<String> list = new ArrayList<>();
-        list.add(Key.SOI);
+        list.add(Key.WOLF);
         if (chkBaoVe.isChecked()) {
             list.add(Key.BAO_VE);
         }
@@ -73,7 +75,7 @@ public class ChooseHeroActivity extends AppCompatActivity implements View.OnClic
         SharedPreferences preferences = getSharedPreferences("my_data", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putStringSet("NHAN_VAT_THAM_GIA", set);
-        editor.putInt("SOI", seekBarSoi.getProgress());
+        editor.putInt("WOLF", seekBarSoi.getProgress());
         editor.apply();
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putStringArrayListExtra("hero", list);

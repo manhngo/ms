@@ -11,12 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.example.manhngo.ms.Adapter.NguoiChoiAdapter;
 import com.example.manhngo.ms.R;
 import com.example.manhngo.ms.Util.MyUtils;
 import com.example.manhngo.ms.Util.ToastUtil;
+import com.example.manhngo.ms.dialog.ChooseWolfDialogFragment;
 import com.example.manhngo.ms.dialog.MyDialogFragment;
 import com.example.manhngo.ms.models.Player;
 import com.stepstone.stepper.BlockingStep;
@@ -31,38 +31,41 @@ import java.util.List;
  */
 
 public class SoiFragment extends Fragment implements BlockingStep {
-    private List<Player> nguoiChois = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
     private NguoiChoiAdapter nguoiChoiAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_soi, container, false);
+
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImageView imageView = view.findViewById(R.id.image_view);
-        RecyclerView recyclerView = view.findViewById(R.id.rv_wolf);
+        RecyclerView recyclerView = view.findViewById(R.id.rv_chose_wolf);
         ImageButton imageButton = view.findViewById(R.id.imgbtn_bite);
-        imageView.setImageResource(R.drawable.soi_icon);
-        MyUtils.prepareRecyclerViewData(nguoiChois);
-        nguoiChoiAdapter = new NguoiChoiAdapter(getActivity(), nguoiChois);
+        MyUtils.prepareRecyclerViewData(players);
+        nguoiChoiAdapter = new NguoiChoiAdapter(getActivity(), players);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(nguoiChoiAdapter);
-
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         // do whatever
-                        ToastUtil.show(getContext(), "on " + position);
+                        ToastUtil.show(getActivity(), "on " + position);
                     }
 
                     @Override
                     public void onLongItemClick(View view, int position) {
                         // do whatever
-                        ToastUtil.show(getContext(), "on long " + position);
+
+                        ToastUtil.show(getActivity(), "on long " + position);
+                        FragmentManager fm = getFragmentManager();
+                        ChooseWolfDialogFragment chooseWolfDialogFragment = ChooseWolfDialogFragment.newInstance(players);
+                        chooseWolfDialogFragment.show(fm, null);
                     }
                 })
         );

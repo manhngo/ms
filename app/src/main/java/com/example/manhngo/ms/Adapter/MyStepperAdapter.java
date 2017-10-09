@@ -37,7 +37,7 @@ public class MyStepperAdapter extends AbstractFragmentStepAdapter {
     @Override
     public Step createStep(int position) {
 
-        if (TextUtils.equals(heroes.get(position), Key.SOI)) {
+        if (TextUtils.equals(heroes.get(position), Key.WOLF)) {
             return new SoiFragment();
         }
 
@@ -74,8 +74,8 @@ public class MyStepperAdapter extends AbstractFragmentStepAdapter {
     public StepViewModel getViewModel(@IntRange(from = 0) int position) {
         StepViewModel.Builder builder = new StepViewModel.Builder(context)
                 .setTitle(R.string.tab_title);
-        if (TextUtils.equals(heroes.get(position), Key.SOI)) {
-            builder.setTitle(Key.SOI)
+        if (TextUtils.equals(heroes.get(position), Key.WOLF)) {
+            builder.setTitle(Key.WOLF)
                     .setEndButtonLabel("This way")
                     .setBackButtonLabel("Cancel")
                     .setBackButtonStartDrawableResId(StepViewModel.NULL_DRAWABLE);

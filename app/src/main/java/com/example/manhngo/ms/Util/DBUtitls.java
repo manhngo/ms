@@ -30,7 +30,7 @@ public final class DBUtitls {
     public static final String CUPID_COLUMN_ID = "Id";
     public static final String CUPID_COLUMN_PLAYER = "Player";
 
-    public static final String SOI_TABLE_NAME = "SOI";
+    public static final String SOI_TABLE_NAME = "WOLF";
     public static final String SOI_COLUMN_ID = "Id";
     public static final String SOI_COLUMN_PLAYER = "Player";
 

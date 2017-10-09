@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PlayerDetailsPresenter {
 
-    PlayerDetailsDatabaseHelper playerDetailsDatabaseHelper;
+    private PlayerDetailsDatabaseHelper playerDetailsDatabaseHelper;
 
     public PlayerDetailsPresenter(Context context) {
         playerDetailsDatabaseHelper = PlayerDetailsDatabaseHelper.getInstance(context);

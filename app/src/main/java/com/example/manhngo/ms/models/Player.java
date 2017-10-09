@@ -13,6 +13,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
+        this.function = Function.NOTHING;
     }
 
     public long getId() {

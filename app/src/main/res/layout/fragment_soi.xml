@@ -6,7 +6,7 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_wolf"
+        android:id="@+id/rv_chose_wolf"
         android:layout_width="match_parent"
         android:layout_height="193dp"
         android:layout_marginEnd="8dp"
@@ -29,7 +29,7 @@
         android:contentDescription="@string/todo"
         app:layout_constraintEnd_toStartOf="@+id/rv_bited"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_wolf"
+        app:layout_constraintTop_toBottomOf="@+id/rv_chose_wolf"
         app:srcCompat="@drawable/ic_bite" />
 
     <android.support.v7.widget.RecyclerView
@@ -40,6 +40,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="84dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_wolf" />
+        app:layout_constraintTop_toBottomOf="@+id/rv_chose_wolf" />
 
 </android.support.constraint.ConstraintLayout>

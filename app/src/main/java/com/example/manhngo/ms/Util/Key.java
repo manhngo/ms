@@ -11,5 +11,5 @@ public final class Key {
     public static final String PHU_THUY = "phu thuy";
     public static final String THO_SAN = "tho san";
     public static final String TIEN_TRI = "tien tri";
-    public static final String SOI = "soi";
+    public static final String WOLF = "soi";
 }
