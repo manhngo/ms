@@ -45,7 +45,7 @@ public class ChooseWolfDialogFragment extends DialogFragment implements View.OnC
         RecyclerView recyclerView = view.findViewById(R.id.rv_choose_wolf);
         Button btnConfirm = view.findViewById(R.id.btn_confirm);
         Button btnClose = view.findViewById(R.id.btn_close);
-
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         cardViewWolfAdapter = new CardViewWolfAdapter(players);
         recyclerView.setAdapter(cardViewWolfAdapter);

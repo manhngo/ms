@@ -20,5 +20,23 @@ public class MyUtils {
         nguoiChois.add(player);
         player = new Player("Me Huong");
         nguoiChois.add(player);
+        player = new Player("Trang");
+        nguoiChois.add(player);
+        player = new Player("Ba Duc");
+        nguoiChois.add(player);
+        player = new Player("Me Huong");
+        nguoiChois.add(player);
+        player = new Player("Trang");
+        nguoiChois.add(player);
+        player = new Player("Ba Ducdfasdfasdfsdfasdfsdf");
+        nguoiChois.add(player);
+        player = new Player("Me Huong");
+        nguoiChois.add(player);
+        player = new Player("Trang");
+        nguoiChois.add(player);
+        player = new Player("Ba Ducdfasdfasdfsdfasdfsdf");
+        nguoiChois.add(player);
+        player = new Player("Me Huong");
+        nguoiChois.add(player);
     }
 }
