@@ -7,7 +7,7 @@ package com.example.manhngo.ms.Util;
 public final class DBUtitls {
 
     public static final String DATABASE_NAME = "MaSoi";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public static final String PLAYERS_TABLE = "players";
 

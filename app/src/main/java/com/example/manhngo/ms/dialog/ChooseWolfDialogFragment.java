@@ -1,5 +1,6 @@
 package com.example.manhngo.ms.dialog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +14,7 @@ import android.widget.Button;
 
 import com.example.manhngo.ms.Adapter.CardViewWolfAdapter;
 import com.example.manhngo.ms.R;
+import com.example.manhngo.ms.inteface.FragmentToActivity;
 import com.example.manhngo.ms.models.Player;
 
 import java.util.List;
@@ -26,12 +28,22 @@ public class ChooseWolfDialogFragment extends DialogFragment implements View.OnC
 
     static List<Player> players;
     CardViewWolfAdapter cardViewWolfAdapter;
+    FragmentToActivity fragmentToActivity;
 
     public static ChooseWolfDialogFragment newInstance(List<Player> players) {
         ChooseWolfDialogFragment dialog = new ChooseWolfDialogFragment();
         ChooseWolfDialogFragment.players = players;
         return dialog;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof FragmentToActivity) {
+            fragmentToActivity = (FragmentToActivity) context;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,6 +66,7 @@ public class ChooseWolfDialogFragment extends DialogFragment implements View.OnC
         btnClose.setOnClickListener(this);
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -68,5 +81,11 @@ public class ChooseWolfDialogFragment extends DialogFragment implements View.OnC
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onDetach() {
+        fragmentToActivity = null;
+        super.onDetach();
     }
 }
