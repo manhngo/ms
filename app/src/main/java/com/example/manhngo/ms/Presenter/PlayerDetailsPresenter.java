@@ -2,8 +2,8 @@ package com.example.manhngo.ms.Presenter;
 
 import android.content.Context;
 
-import com.example.manhngo.ms.models.Player;
-import com.example.manhngo.ms.models.PlayerDetailsDatabaseHelper;
+import com.example.manhngo.ms.Util.Function;
+import com.example.manhngo.ms.models.PlayerDatabaseHelper;
 
 import java.util.List;
 
@@ -13,19 +13,19 @@ import java.util.List;
 
 public class PlayerDetailsPresenter {
 
-    private PlayerDetailsDatabaseHelper playerDetailsDatabaseHelper;
+    private PlayerDatabaseHelper playerDatabaseHelper;
 
     public PlayerDetailsPresenter(Context context) {
-        playerDetailsDatabaseHelper = PlayerDetailsDatabaseHelper.getInstance(context);
+        playerDatabaseHelper = PlayerDatabaseHelper.getInstance(context);
     }
 
 
     public List<Integer> getPlayersByFunction(String function) {
-        return playerDetailsDatabaseHelper.getPlayersByFunction(function);
+        return playerDatabaseHelper.getPlayersByFunction(function);
     }
 
-    public long addPlayerDetails(Player player, String function) {
-        return playerDetailsDatabaseHelper.addPlayerDetails(player, function);
+    public long updateFunctionPlayerDetails(long id, Function function) {
+        return playerDatabaseHelper.updateFunctionPlayerById(id, function);
     }
 
 }

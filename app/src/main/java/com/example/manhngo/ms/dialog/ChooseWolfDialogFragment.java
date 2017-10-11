@@ -1,6 +1,5 @@
 package com.example.manhngo.ms.dialog;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,14 +34,9 @@ public class ChooseWolfDialogFragment extends DialogFragment implements View.OnC
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            dialogToFragment = (DialogToFragment) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement DialogToFragment");
-        }
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dialogToFragment = (DialogToFragment) getTargetFragment();
     }
 
     @Override
@@ -87,5 +81,11 @@ public class ChooseWolfDialogFragment extends DialogFragment implements View.OnC
     @Override
     public void onSelect(long id, Function function) {
         dialogToFragment.onSelect(id, function);
+    }
+
+    @Override
+    public void onDetach() {
+        dialogToFragment = null; // => avoid leaking, thanks @Deepscorn
+        super.onDetach();
     }
 }

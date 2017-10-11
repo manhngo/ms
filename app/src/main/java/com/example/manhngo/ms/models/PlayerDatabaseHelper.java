@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
 import com.example.manhngo.ms.Util.DBUtitls;
@@ -40,16 +41,33 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            db.setForeignKeyConstraintsEnabled(true);
+        }
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_PLAYERS_TABLE = String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY, %s TEXT UNIQUE, %s TEXT)",
                 DBUtitls.PLAYERS_TABLE, DBUtitls.PLAYERS_COLUMN_ID, DBUtitls.PLAYERS_COLUMN_NAME, DBUtitls.PLAYERS_COLUMN_FUNCTION);
+
+        String CREATE_PLAYER_DETAILS_TABLE = String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY, %s INTEGER UNIQUE REFERENCES %s, %s TEXT, %s BLOB DEFAULT TRUE)",
+                DBUtitls.PLAYER_DETAILS_TABLE,
+                DBUtitls.PLAYER_DETAILS_COLUMN_ID, DBUtitls.PLAYER_DETAILS_COLUMN_PLAYER,
+                DBUtitls.PLAYERS_TABLE,
+                DBUtitls.PLAYER_DETAILS_COLUMN_FUNCTION, DBUtitls.PLAYER_DETAILS_COLUMN_SURVIVE);
+
         sqLiteDatabase.execSQL(CREATE_PLAYERS_TABLE);
+//        sqLiteDatabase.execSQL(CREATE_PLAYER_DETAILS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         Log.d(TAG, "onUpgrade: ");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DBUtitls.PLAYERS_TABLE);
+        //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DBUtitls.PLAYER_DETAILS_TABLE);
         onCreate(sqLiteDatabase);
     }
 
@@ -146,6 +164,41 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(player.getId())});
     }
 
+    public long updateFunctionPlayerById(long id, Function function) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DBUtitls.PLAYERS_COLUMN_FUNCTION, String.valueOf(function));
+        // Updating profile picture url for user with that userName
+        return db.update(DBUtitls.PLAYERS_TABLE, values, DBUtitls.PLAYERS_COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)});
+    }
+
+    public Player getPlayerById(String id) {
+        SQLiteDatabase db = getReadableDatabase();
+        String where = DBUtitls.PLAYERS_COLUMN_ID + " = ?";
+        String[] whereArgs = {id};
+        Cursor cursor = db.query(DBUtitls.PLAYERS_TABLE, null, where, whereArgs, null, null, null);
+        Player player = null;
+        try {
+            if (cursor.moveToFirst()) {
+
+                player = new Player("UNKNOWN_NAME");
+                player.setId(cursor.getLong(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_ID)));
+                player.setName(cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_NAME)));
+                if (cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_FUNCTION)) != null) {
+                    player.setFunction(Function.valueOf(cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_FUNCTION))));
+                }
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get player from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return player;
+    }
     public void deleteAllPlayers() {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
@@ -173,10 +226,54 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-//    public boolean checkDataAlreadyInDb() {
-//        SQLiteDatabase database = getReadableDatabase();
-//        String PLAYERS_SELECT_QUERY =
-//                String.format("SELECT * FROM %s WHERE %s = %s" ,
-//                        TABLE_PLAYERS, Name);
+//    public long updateFunctionPlayerDetails(long id, String function) {
+//        SQLiteDatabase writableDatabase = getWritableDatabase();
+//        writableDatabase.beginTransaction();
+//        try {
+//            ContentValues values = new ContentValues();
+//            values.put(DBUtitls.PLAYER_DETAILS_COLUMN_PLAYER, player.getId());
+//            values.put(DBUtitls.PLAYER_DETAILS_COLUMN_FUNCTION, function);
+//            id = writableDatabase.insertOrThrow(DBUtitls.PLAYER_DETAILS_TABLE, null, values);
+//
+//        } catch (Exception e) {
+//            id = -1;
+//            Log.d(TAG, "updateFunctionPlayerDetails: " + e);
+//        } finally {
+//            writableDatabase.endTransaction();
+//        }
+//        return id;
 //    }
+
+    public long updateSurviveByPlayer(Player player, boolean value) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBUtitls.PLAYER_DETAILS_COLUMN_SURVIVE, value);
+        return db.update(DBUtitls.PLAYER_DETAILS_TABLE, values,
+                DBUtitls.PLAYER_DETAILS_COLUMN_PLAYER + " = ?",
+                new String[]{String.valueOf(player.getId())});
+    }
+
+    public List<Integer> getPlayersByFunction(String function) {
+        List<Integer> listId = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(DBUtitls.PLAYER_DETAILS_TABLE, null, DBUtitls.PLAYER_DETAILS_COLUMN_FUNCTION + " = ?", new String[]{function}, null, null, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    listId.add((int) cursor.getLong(cursor.getColumnIndex(DBUtitls.PLAYER_DETAILS_COLUMN_PLAYER)));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get 'id player' from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        if (cursor != null)
+            cursor.moveToFirst();
+        return listId;
+    }
 }

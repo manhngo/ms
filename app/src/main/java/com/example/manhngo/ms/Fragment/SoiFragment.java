@@ -86,6 +86,7 @@ public class SoiFragment extends Fragment implements BlockingStep, DialogToFragm
                         ToastUtil.show(getActivity(), "on long " + position);
                         FragmentManager fm = getFragmentManager();
                         ChooseWolfDialogFragment chooseWolfDialogFragment = ChooseWolfDialogFragment.newInstance(cursor);
+                        chooseWolfDialogFragment.setTargetFragment(SoiFragment.this, 0);
                         chooseWolfDialogFragment.show(fm, null);
                     }
                 })
@@ -132,6 +133,12 @@ public class SoiFragment extends Fragment implements BlockingStep, DialogToFragm
 
     @Override
     public void onSelect(long id, Function function) {
+        fragmentToActivity.onSelect(id, function);
+    }
 
+    @Override
+    public void onDetach() {
+        fragmentToActivity = null; // => avoid leaking, thanks @Deepscorn
+        super.onDetach();
     }
 }

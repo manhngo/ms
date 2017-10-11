@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements StepperLayout.Ste
 
 
         playerPresenter = new PlayerPresenter(this);
+        playerDetailsPresenter = new PlayerDetailsPresenter(this);
         mStepperLayout = findViewById(R.id.stepperLayout);
         MyStepperAdapter myStepperAdapter = new MyStepperAdapter(getSupportFragmentManager(), this, list, playerPresenter.fetchAllPlayers());
         mStepperLayout.setAdapter(myStepperAdapter);
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements StepperLayout.Ste
 
     @Override
     public void onSelect(long id, Function function) {
-
+        long x = playerDetailsPresenter.updateFunctionPlayerDetails(id, function);
+        Log.d(TAG, "onSelect: " + id + " f " + function);
+        Log.d(TAG, "onSelect: 123 " + x);
     }
 }
