@@ -20,7 +20,7 @@ import com.example.manhngo.ms.R;
 import com.example.manhngo.ms.Util.DBUtitls;
 import com.example.manhngo.ms.Util.ToastUtil;
 import com.example.manhngo.ms.dialog.PlayersDialogFragment;
-import com.example.manhngo.ms.inteface.FragmentToActivity;
+import com.example.manhngo.ms.inteface.FragmentPlayersToActivityPlayers;
 import com.example.manhngo.ms.models.Player;
 
 import java.util.ArrayList;
@@ -30,10 +30,10 @@ import java.util.Set;
  * Created by NgoXuanManh on 3/15/2017.
  */
 
-public class PlayersActivity extends AppCompatActivity implements View.OnClickListener,
-        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, FragmentToActivity {
+public class PlayersActivityPlayers extends AppCompatActivity implements View.OnClickListener,
+        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, FragmentPlayersToActivityPlayers {
 
-    public static String TAG = "PlayersActivity";
+    public static String TAG = "PlayersActivityPlayers";
     EditText edtNhapTen;
     Button btnThem;
     Button btnSubmit;

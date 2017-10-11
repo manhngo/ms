@@ -1,5 +1,7 @@
 package com.example.manhngo.ms.Fragment;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,10 +16,13 @@ import android.widget.ImageButton;
 
 import com.example.manhngo.ms.Adapter.NguoiChoiAdapter;
 import com.example.manhngo.ms.R;
+import com.example.manhngo.ms.Util.Function;
 import com.example.manhngo.ms.Util.MyUtils;
 import com.example.manhngo.ms.Util.ToastUtil;
 import com.example.manhngo.ms.dialog.ChooseWolfDialogFragment;
 import com.example.manhngo.ms.dialog.MyDialogFragment;
+import com.example.manhngo.ms.inteface.DialogToFragment;
+import com.example.manhngo.ms.inteface.FragmentToActivity;
 import com.example.manhngo.ms.models.Player;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
@@ -30,10 +35,15 @@ import java.util.List;
  * Created by NgoXuanManh on 7/23/2017.
  */
 
-public class SoiFragment extends Fragment implements BlockingStep {
+public class SoiFragment extends Fragment implements BlockingStep, DialogToFragment {
+    static Cursor cursor;
+    FragmentToActivity fragmentToActivity;
     private List<Player> players = new ArrayList<>();
-    private NguoiChoiAdapter nguoiChoiAdapter;
 
+    public static SoiFragment newInstance(Cursor cursor) {
+        SoiFragment.cursor = cursor;
+        return new SoiFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,12 +52,23 @@ public class SoiFragment extends Fragment implements BlockingStep {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            fragmentToActivity = (FragmentToActivity) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement FragmentToActivity");
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.rv_chose_wolf);
         ImageButton imageButton = view.findViewById(R.id.imgbtn_bite);
         MyUtils.prepareRecyclerViewData(players);
-        nguoiChoiAdapter = new NguoiChoiAdapter(getActivity(), players);
+        NguoiChoiAdapter nguoiChoiAdapter = new NguoiChoiAdapter(getActivity(), players);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(nguoiChoiAdapter);
         recyclerView.addOnItemTouchListener(
@@ -64,7 +85,7 @@ public class SoiFragment extends Fragment implements BlockingStep {
 
                         ToastUtil.show(getActivity(), "on long " + position);
                         FragmentManager fm = getFragmentManager();
-                        ChooseWolfDialogFragment chooseWolfDialogFragment = ChooseWolfDialogFragment.newInstance(players);
+                        ChooseWolfDialogFragment chooseWolfDialogFragment = ChooseWolfDialogFragment.newInstance(cursor);
                         chooseWolfDialogFragment.show(fm, null);
                     }
                 })
@@ -106,6 +127,11 @@ public class SoiFragment extends Fragment implements BlockingStep {
 
     @Override
     public void onError(@NonNull VerificationError error) {
+
+    }
+
+    @Override
+    public void onSelect(long id, Function function) {
 
     }
 }

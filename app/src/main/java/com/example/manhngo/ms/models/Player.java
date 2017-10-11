@@ -1,5 +1,8 @@
 package com.example.manhngo.ms.models;
 
+import android.database.Cursor;
+
+import com.example.manhngo.ms.Util.DBUtitls;
 import com.example.manhngo.ms.Util.Function;
 
 /**
@@ -14,6 +17,16 @@ public class Player {
     public Player(String name) {
         this.name = name;
         this.function = Function.NOTHING;
+    }
+
+    public static Player fromCursor(Cursor cursor) {
+        Player player = new Player("UNKNOWN_NAME");
+        player.setId(cursor.getLong(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_ID)));
+        player.setName(cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_NAME)));
+        if (cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_FUNCTION)) != null) {
+            player.setFunction(Function.valueOf(cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_FUNCTION))));
+        }
+        return player;
     }
 
     public long getId() {

@@ -21,7 +21,8 @@ import java.util.Set;
  * Created by NgoXuanManh on 3/14/2017.
  */
 
-public class ChooseHeroActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class ChooseHeroActivity extends AppCompatActivity implements View.OnClickListener,
+        SeekBar.OnSeekBarChangeListener {
     private static final String TAG = ChooseHeroActivity.class.getSimpleName();
     CheckBox chkThoSan;
     CheckBox chkBaoVe;
@@ -45,7 +46,6 @@ public class ChooseHeroActivity extends AppCompatActivity implements View.OnClic
         chkTienTri = findViewById(R.id.chkTienTri);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(this);
-
         seekBarSoi.setOnSeekBarChangeListener(this);
     }
 

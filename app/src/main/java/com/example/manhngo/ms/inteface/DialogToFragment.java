@@ -6,6 +6,6 @@ import com.example.manhngo.ms.Util.Function;
  * Created by NgoXuanManh on 10/11/2017.
  */
 
-public interface FragmentToActivity {
+public interface DialogToFragment {
     void onSelect(long id, Function function);
 }

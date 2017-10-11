@@ -1,6 +1,7 @@
 package com.example.manhngo.ms.dialog;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -12,35 +13,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.manhngo.ms.Adapter.CardViewWolfAdapter;
+import com.example.manhngo.ms.Adapter.CardViewCursorWolfAdapter;
 import com.example.manhngo.ms.R;
-import com.example.manhngo.ms.inteface.FragmentToActivity;
-import com.example.manhngo.ms.models.Player;
-
-import java.util.List;
+import com.example.manhngo.ms.Util.Function;
+import com.example.manhngo.ms.inteface.AdapterToDialogFragment;
+import com.example.manhngo.ms.inteface.DialogToFragment;
 
 /**
  * Created by NgoXuanManh on 10/8/2017.
  */
 
-public class ChooseWolfDialogFragment extends DialogFragment implements View.OnClickListener {
+public class ChooseWolfDialogFragment extends DialogFragment implements View.OnClickListener, AdapterToDialogFragment {
     private static final String TAG = ChooseWolfDialogFragment.class.getSimpleName();
+    static Cursor cursor;
+    CardViewCursorWolfAdapter cardViewCursorWolfAdapter;
+    DialogToFragment dialogToFragment;
 
-    static List<Player> players;
-    CardViewWolfAdapter cardViewWolfAdapter;
-    FragmentToActivity fragmentToActivity;
-
-    public static ChooseWolfDialogFragment newInstance(List<Player> players) {
-        ChooseWolfDialogFragment dialog = new ChooseWolfDialogFragment();
-        ChooseWolfDialogFragment.players = players;
-        return dialog;
+    public static ChooseWolfDialogFragment newInstance(Cursor cursor) {
+        ChooseWolfDialogFragment.cursor = cursor;
+        return new ChooseWolfDialogFragment();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentToActivity) {
-            fragmentToActivity = (FragmentToActivity) context;
+        try {
+            dialogToFragment = (DialogToFragment) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement DialogToFragment");
         }
     }
 
@@ -59,8 +60,8 @@ public class ChooseWolfDialogFragment extends DialogFragment implements View.OnC
         Button btnClose = view.findViewById(R.id.btn_close);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cardViewWolfAdapter = new CardViewWolfAdapter(players);
-        recyclerView.setAdapter(cardViewWolfAdapter);
+        cardViewCursorWolfAdapter = new CardViewCursorWolfAdapter(getActivity(), cursor, this);
+        recyclerView.setAdapter(cardViewCursorWolfAdapter);
 
         btnConfirm.setOnClickListener(this);
         btnClose.setOnClickListener(this);
@@ -84,8 +85,7 @@ public class ChooseWolfDialogFragment extends DialogFragment implements View.OnC
     }
 
     @Override
-    public void onDetach() {
-        fragmentToActivity = null;
-        super.onDetach();
+    public void onSelect(long id, Function function) {
+        dialogToFragment.onSelect(id, function);
     }
 }

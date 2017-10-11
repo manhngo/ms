@@ -7,17 +7,26 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.manhngo.ms.Adapter.MyStepperAdapter;
+import com.example.manhngo.ms.Presenter.PlayerDetailsPresenter;
+import com.example.manhngo.ms.Presenter.PlayerPresenter;
 import com.example.manhngo.ms.R;
+import com.example.manhngo.ms.Util.Function;
+import com.example.manhngo.ms.inteface.FragmentToActivity;
+import com.example.manhngo.ms.models.Player;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements StepperLayout.StepperListener {
+public class MainActivity extends AppCompatActivity implements StepperLayout.StepperListener, FragmentToActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private StepperLayout mStepperLayout;
+    private List<Player> players = new ArrayList<>();
+    private PlayerDetailsPresenter playerDetailsPresenter;
+    private PlayerPresenter playerPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +37,13 @@ public class MainActivity extends AppCompatActivity implements StepperLayout.Ste
         Log.d(TAG, "onCreate: List" + list);
 
 
+        playerPresenter = new PlayerPresenter(this);
         mStepperLayout = findViewById(R.id.stepperLayout);
-        MyStepperAdapter myStepperAdapter = new MyStepperAdapter(getSupportFragmentManager(), this, list);
+        MyStepperAdapter myStepperAdapter = new MyStepperAdapter(getSupportFragmentManager(), this, list, playerPresenter.fetchAllPlayers());
         mStepperLayout.setAdapter(myStepperAdapter);
         mStepperLayout.setListener(this);
+
+
     }
 
     @Override
@@ -54,4 +66,8 @@ public class MainActivity extends AppCompatActivity implements StepperLayout.Ste
         finish();
     }
 
+    @Override
+    public void onSelect(long id, Function function) {
+
+    }
 }

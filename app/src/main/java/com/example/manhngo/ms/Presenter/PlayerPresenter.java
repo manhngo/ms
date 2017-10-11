@@ -52,7 +52,8 @@ public class PlayerPresenter {
         player.setId(cursor.getLong(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_ID)));
         player.setName(cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_NAME)));
         if (cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_FUNCTION)) != null) {
-            player.setFunction(Function.valueOf(cursor.getString(cursor.getColumnIndex(DBUtitls.PLAYERS_COLUMN_FUNCTION))));
+            player.setFunction(Function.valueOf(cursor.getString(cursor.getColumnIndex(
+                    DBUtitls.PLAYERS_COLUMN_FUNCTION))));
         }
         return player;
     }

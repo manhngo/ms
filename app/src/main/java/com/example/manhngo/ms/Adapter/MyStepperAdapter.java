@@ -1,6 +1,7 @@
 package com.example.manhngo.ms.Adapter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -27,18 +28,20 @@ import java.util.ArrayList;
 public class MyStepperAdapter extends AbstractFragmentStepAdapter {
 
     private static final String CURRENT_STEP_POSITION_KEY = "A";
+    private static Cursor cursor;
     private ArrayList<String> heroes;
 
-    public MyStepperAdapter(FragmentManager fm, Context context, ArrayList<String> heroes) {
+    public MyStepperAdapter(FragmentManager fm, Context context, ArrayList<String> heroes, Cursor cursor) {
         super(fm, context);
         this.heroes = heroes;
+        MyStepperAdapter.cursor = cursor;
     }
 
     @Override
     public Step createStep(int position) {
 
         if (TextUtils.equals(heroes.get(position), Key.WOLF)) {
-            return new SoiFragment();
+            return SoiFragment.newInstance(cursor);
         }
 
         if (TextUtils.equals(heroes.get(position), Key.CUPID)) {

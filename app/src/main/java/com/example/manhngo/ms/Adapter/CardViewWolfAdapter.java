@@ -50,16 +50,17 @@ public class CardViewWolfAdapter extends
             }
         }
 
-        //holder.chkWolf.setTag(players.get(position));
+        holder.chkWolf.setTag(players.get(position));
+
+
         holder.chkWolf.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+
                 boolean checked = ((CheckBox) view).isChecked();
                 if (checked) {
                     players.get(pos).setFunction(Function.WOLF);
-                    Log.d(TAG, "onClick: " + players.get(pos));
                 } else {
                     players.get(pos).setFunction(Function.NOTHING);
-                    Log.d(TAG, "onClick: " + players.get(pos));
                 }
             }
         });

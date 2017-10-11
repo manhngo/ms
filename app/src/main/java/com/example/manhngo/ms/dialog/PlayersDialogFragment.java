@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.manhngo.ms.R;
-import com.example.manhngo.ms.inteface.FragmentToActivity;
+import com.example.manhngo.ms.inteface.FragmentPlayersToActivityPlayers;
 
 /**
  * Created by NgoXuanManh on 10/8/2017.
@@ -23,7 +23,7 @@ public class PlayersDialogFragment extends DialogFragment {
 
     private static final String TAG = PlayersDialogFragment.class.getSimpleName();
 
-    FragmentToActivity fragmentToActivity;
+    FragmentPlayersToActivityPlayers fragmentToActivity;
 
     public static PlayersDialogFragment newInstance(String data) {
         PlayersDialogFragment dialog = new PlayersDialogFragment();
@@ -36,8 +36,8 @@ public class PlayersDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentToActivity) {
-            fragmentToActivity = (FragmentToActivity) context;
+        if (context instanceof FragmentPlayersToActivityPlayers) {
+            fragmentToActivity = (FragmentPlayersToActivityPlayers) context;
         }
     }
 
