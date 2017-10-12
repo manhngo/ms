@@ -132,8 +132,13 @@ public class SoiFragment extends Fragment implements BlockingStep, DialogToFragm
     }
 
     @Override
-    public void onSelect(long id, Function function) {
-        fragmentToActivity.onSelect(id, function);
+    public void onSelectFunction(long id, Function function) {
+        fragmentToActivity.onSelectFunction(id, function);
+    }
+
+    @Override
+    public void onSelect(long id) {
+        fragmentToActivity.onSelect(id);
     }
 
     @Override

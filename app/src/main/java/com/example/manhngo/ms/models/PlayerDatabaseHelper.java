@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
 
+import com.example.manhngo.ms.Util.Action;
 import com.example.manhngo.ms.Util.DBUtitls;
 import com.example.manhngo.ms.Util.Function;
 
@@ -50,17 +51,16 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_PLAYERS_TABLE = String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY, %s TEXT UNIQUE, %s TEXT)",
-                DBUtitls.PLAYERS_TABLE, DBUtitls.PLAYERS_COLUMN_ID, DBUtitls.PLAYERS_COLUMN_NAME, DBUtitls.PLAYERS_COLUMN_FUNCTION);
+        String CREATE_PLAYERS_TABLE = String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY, %s TEXT UNIQUE, %s TEXT, %s BLOB DEFAULT TRUE)",
+                DBUtitls.PLAYERS_TABLE, DBUtitls.PLAYERS_COLUMN_ID, DBUtitls.PLAYERS_COLUMN_NAME, DBUtitls.PLAYERS_COLUMN_FUNCTION, DBUtitls.PLAYERS_COLUMN_SURVIVE);
 
-        String CREATE_PLAYER_DETAILS_TABLE = String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY, %s INTEGER UNIQUE REFERENCES %s, %s TEXT, %s BLOB DEFAULT TRUE)",
-                DBUtitls.PLAYER_DETAILS_TABLE,
-                DBUtitls.PLAYER_DETAILS_COLUMN_ID, DBUtitls.PLAYER_DETAILS_COLUMN_PLAYER,
-                DBUtitls.PLAYERS_TABLE,
-                DBUtitls.PLAYER_DETAILS_COLUMN_FUNCTION, DBUtitls.PLAYER_DETAILS_COLUMN_SURVIVE);
+        String CREATE_ROUND_DETAILS_TABLE = String.format("CREATE TABLE %s ( %s INTEGER PRIMARY KEY, %s TEXT, %s TEXT, %s INTEGER)",
+                DBUtitls.ROUND_DETAILS_TABLE, DBUtitls.ROUND_DETAILS_COLUMN_ID,
+                DBUtitls.ROUND_DETAILS_COLUMN_FUNCTION, DBUtitls.ROUND_DETAILS_COLUMN_ACTION,
+                DBUtitls.ROUND_DETAILS_COLUMN_PLAYER);
 
         sqLiteDatabase.execSQL(CREATE_PLAYERS_TABLE);
-//        sqLiteDatabase.execSQL(CREATE_PLAYER_DETAILS_TABLE);
+        sqLiteDatabase.execSQL(CREATE_ROUND_DETAILS_TABLE);
     }
 
     @Override
@@ -244,36 +244,24 @@ public class PlayerDatabaseHelper extends SQLiteOpenHelper {
 //        return id;
 //    }
 
-    public long updateSurviveByPlayer(Player player, boolean value) {
+    public long updateSurviveByPlayerId(long id, boolean value) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DBUtitls.PLAYER_DETAILS_COLUMN_SURVIVE, value);
-        return db.update(DBUtitls.PLAYER_DETAILS_TABLE, values,
-                DBUtitls.PLAYER_DETAILS_COLUMN_PLAYER + " = ?",
-                new String[]{String.valueOf(player.getId())});
+        values.put(DBUtitls.PLAYERS_COLUMN_SURVIVE, value);
+        return db.update(DBUtitls.PLAYERS_TABLE, values,
+                DBUtitls.PLAYERS_COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)});
     }
 
-    public List<Integer> getPlayersByFunction(String function) {
-        List<Integer> listId = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
+    public void addRoundDetails(Function function, long playerId, Action action) {
 
-        Cursor cursor = db.query(DBUtitls.PLAYER_DETAILS_TABLE, null, DBUtitls.PLAYER_DETAILS_COLUMN_FUNCTION + " = ?", new String[]{function}, null, null, null);
+    }
 
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    listId.add((int) cursor.getLong(cursor.getColumnIndex(DBUtitls.PLAYER_DETAILS_COLUMN_PLAYER)));
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get 'id player' from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-        if (cursor != null)
-            cursor.moveToFirst();
-        return listId;
+    public void getRoundDetailsByFunction(Function function) {
+
+    }
+
+    public void updateVictimByFunction(Function function) {
+
     }
 }

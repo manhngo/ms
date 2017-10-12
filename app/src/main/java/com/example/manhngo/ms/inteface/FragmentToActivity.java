@@ -7,5 +7,7 @@ import com.example.manhngo.ms.Util.Function;
  */
 
 public interface FragmentToActivity {
-    void onSelect(long id, Function function);
+    void onSelectFunction(long id, Function function);
+
+    void onSelect(long id);
 }

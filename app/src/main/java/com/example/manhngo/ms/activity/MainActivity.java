@@ -68,9 +68,17 @@ public class MainActivity extends AppCompatActivity implements StepperLayout.Ste
     }
 
     @Override
-    public void onSelect(long id, Function function) {
-        long x = playerDetailsPresenter.updateFunctionPlayerDetails(id, function);
-        Log.d(TAG, "onSelect: " + id + " f " + function);
-        Log.d(TAG, "onSelect: 123 " + x);
+    public void onSelectFunction(long id, Function function) {
+        long x = playerPresenter.updateFunctionPlayerDetails(id, function);
+        Log.d(TAG, "onSelectFunction: " + id + " f " + function);
+        Log.d(TAG, "onSelectFunction: 123 " + x);
+    }
+
+    @Override
+    public void onSelect(long id) {
+        Function function = Function.WOLF;
+        if (function.equals(Function.WOLF)) {
+            playerPresenter.selectPlayerWithActive(function, id, action);
+        }
     }
 }

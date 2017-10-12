@@ -2,7 +2,6 @@ package com.example.manhngo.ms.Presenter;
 
 import android.content.Context;
 
-import com.example.manhngo.ms.Util.Function;
 import com.example.manhngo.ms.models.PlayerDatabaseHelper;
 
 import java.util.List;
@@ -24,8 +23,5 @@ public class PlayerDetailsPresenter {
         return playerDatabaseHelper.getPlayersByFunction(function);
     }
 
-    public long updateFunctionPlayerDetails(long id, Function function) {
-        return playerDatabaseHelper.updateFunctionPlayerById(id, function);
-    }
 
 }

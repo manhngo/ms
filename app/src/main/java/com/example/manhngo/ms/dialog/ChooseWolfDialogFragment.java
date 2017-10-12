@@ -80,7 +80,7 @@ public class ChooseWolfDialogFragment extends DialogFragment implements View.OnC
 
     @Override
     public void onSelect(long id, Function function) {
-        dialogToFragment.onSelect(id, function);
+        dialogToFragment.onSelectFunction(id, function);
     }
 
     @Override

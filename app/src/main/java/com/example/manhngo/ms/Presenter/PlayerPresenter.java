@@ -3,6 +3,7 @@ package com.example.manhngo.ms.Presenter;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.example.manhngo.ms.Util.Action;
 import com.example.manhngo.ms.Util.DBUtitls;
 import com.example.manhngo.ms.Util.Function;
 import com.example.manhngo.ms.models.Player;
@@ -17,16 +18,16 @@ import java.util.List;
 
 public class PlayerPresenter {
 
-    private PlayerDatabaseHelper databaseHelper;
+    private PlayerDatabaseHelper playerDatabaseHelper;
     private List<Player> playerList;
 
     public PlayerPresenter(Context context) {
-        databaseHelper = PlayerDatabaseHelper.getInstance(context);
+        playerDatabaseHelper = PlayerDatabaseHelper.getInstance(context);
         playerList = new ArrayList<>();
     }
 
     public long addPlayer(Player player) {
-        return databaseHelper.addPlayer(player);
+        return playerDatabaseHelper.addPlayer(player);
     }
 
     public List<Player> getPlayerList() {
@@ -36,15 +37,15 @@ public class PlayerPresenter {
 
     public long updateNameById(Player player) {
 
-        return databaseHelper.updatePlayerById(player);
+        return playerDatabaseHelper.updatePlayerById(player);
     }
 
     private void syncArrayList() {
-        playerList = databaseHelper.getAllPlayers();
+        playerList = playerDatabaseHelper.getAllPlayers();
     }
 
     public Cursor fetchAllPlayers() {
-        return databaseHelper.fetchAllPlayers();
+        return playerDatabaseHelper.fetchAllPlayers();
     }
 
     public Player getPlayerFromCursor(Cursor cursor) {
@@ -56,5 +57,17 @@ public class PlayerPresenter {
                     DBUtitls.PLAYERS_COLUMN_FUNCTION))));
         }
         return player;
+    }
+
+    public long updateFunctionPlayerDetails(long id, Function function) {
+        return playerDatabaseHelper.updateFunctionPlayerById(id, function);
+    }
+
+    public void selectPlayerWithActive(Function function, long id, Action action) {
+        if (0 < playerDatabaseHelper.getRoundDetailsByFunction(function)) {
+            playerDatabaseHelper.updateVictimByFunction(function);
+        }
+        ;
+        playerDatabaseHelper.addRoundDetails(function, id, action);
     }
 }
